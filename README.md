@@ -2,12 +2,17 @@
 
 ## Arguments
 - Java Version: Change depending on version of minecraft you're using.
+- Minecraft Version: Changes the version of the minecraft install.
+
+## Script
+- -u/--update allows you to change the version
+- Pass java arguments normally otherwise
 
 ## Ports
 - Port exposed is 25565
 
-## Required files to build
-- You need a "server.jar" and a "eula.txt" (containing eula=true)
+## EULA
+- You must agree to the eula.txt
 
 ## RAM
-- Default RAM max is set to 15% of physical memory
+- Pass -Xmx(RAM) when starting the server (ex: -Xmx2G)
