@@ -1,20 +1,24 @@
-ARG JAVA_VERSION="21"
+FROM alpine:latest
 
-FROM eclipse-temurin:${JAVA_VERSION}-jre
+ARG MINECRAFT_VERSION="1.21.8"
+ARG JAVA_VERSION="21"
 
 EXPOSE 25565/tcp
 
-RUN useradd user
+RUN apk add --no-cache openjdk${JAVA_VERSION}-jre jq curl
+
+RUN adduser -D user
 RUN mkdir /data
 RUN chown user /data
 
-VOLUME ["/data"]
 WORKDIR /data
 
-COPY server.jar ./
-COPY eula.txt ./
+COPY --chown=user --chmod=755 build/run.sh ./
+COPY build/eula.txt ./
+RUN ./run.sh -u $MINECRAFT_VERSION
+
+VOLUME ["/data"]
 
 USER user
 
-ENTRYPOINT ["/opt/java/openjdk/bin/java"]
-CMD ["-XX:MaxRAMPercentage=15.0", "-jar", "server.jar", "--nogui"]
+ENTRYPOINT ["./run.sh"]
